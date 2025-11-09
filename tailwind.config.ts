@@ -81,6 +81,11 @@ export default {
           busy: "rgb(239 68 68)",
           offline: "rgb(156 163 175)",
         },
+        parking: {
+          available: "rgb(34 197 94)",
+          reserved: "rgb(59 130 246)",
+          occupied: "rgb(239 68 68)",
+        },
       },
       fontFamily: {
         sans: ["var(--font-sans)"],
