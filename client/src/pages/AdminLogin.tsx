@@ -43,7 +43,7 @@ export default function AdminLogin() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="absolute top-4 right-4">
-        <DarkModeToggle />
+     <DarkModeToggle /> 
       </div>
       
       <Card className="w-full max-w-md">
@@ -89,6 +89,17 @@ export default function AdminLogin() {
               Se connecter
             </Button>
           </form>
+
+          {/* Retour à la landing page */}
+          <div className="mt-4 text-center">
+            <Button
+              variant="ghost"
+              onClick={() => setLocation("/")}
+              className="text-primary hover:text-primary/80"
+            >
+              ← Retour à l'accueil
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </div>

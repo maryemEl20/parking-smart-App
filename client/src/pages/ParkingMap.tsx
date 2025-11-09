@@ -1,8 +1,7 @@
 import { useLocation } from "wouter";
-import { Car, Clock, User } from "lucide-react";
+import { Car, Clock, User, Ban } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import DarkModeToggle from "@/components/DarkModeToggle";
 
 type SpotStatus = "available" | "reserved" | "occupied";
@@ -17,34 +16,23 @@ interface ParkingSpot {
 
 export default function ParkingMap() {
   const [, setLocation] = useLocation();
-  
+
   const spots: ParkingSpot[] = [
     { id: 1, status: "available" },
-    { id: 2, status: "reserved", clientName: "Marie Laurent", eta: "15 min", endTime: "14:30" },
+    { id: 2, status: "reserved", clientName: "Maryem", eta: "15 min", endTime: "14:30" },
     { id: 3, status: "available" },
-    { id: 4, status: "occupied", clientName: "Pierre Dubois", endTime: "16:00" },
+    { id: 4, status: "occupied", clientName: "Khaoula", endTime: "16:00" },
     { id: 5, status: "available" },
   ];
-
-  const getStatusColor = (status: SpotStatus) => {
-    switch (status) {
-      case "available":
-        return "bg-parking-available hover:bg-green-600";
-      case "reserved":
-        return "bg-parking-reserved";
-      case "occupied":
-        return "bg-parking-occupied";
-    }
-  };
 
   const getStatusIcon = (status: SpotStatus) => {
     switch (status) {
       case "available":
-        return "🟢";
+        return <Car className="h-12 w-12 text-green-500" />;
       case "reserved":
-        return "🔵";
+        return <Clock className="h-12 w-12 text-blue-500" />;
       case "occupied":
-        return "🔴";
+        return <Ban className="h-12 w-12 text-red-500" />;
     }
   };
 
@@ -62,16 +50,26 @@ export default function ParkingMap() {
             <Car className="h-8 w-8 text-primary" />
             <span className="text-2xl font-bold">SmartPark</span>
           </div>
+
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
               onClick={() => setLocation("/reservation-history")}
-              data-testid="button-history"
             >
               Mes réservations
             </Button>
-            <DarkModeToggle />
+                  {/* Bouton Déconnexion */}
+            <Button
+                variant="destructive"
+                onClick={() => {
+                  localStorage.removeItem("clientSession"); // Supprime la session
+                  setLocation("/"); // Retour à la landing page
+                }} >
+                  Déconnexion
+              </Button>
+       {/* <DarkModeToggle /> */}
           </div>
+
         </div>
       </header>
 
@@ -80,15 +78,15 @@ export default function ParkingMap() {
           <h1 className="text-4xl font-bold mb-4">Places de parking disponibles</h1>
           <div className="flex gap-6 justify-center flex-wrap">
             <div className="flex items-center gap-2">
-              <span className="text-2xl">🟢</span>
+              <Car className="h-6 w-6 text-green-500" />
               <span className="text-muted-foreground">Disponible</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-2xl">🔵</span>
+              <Clock className="h-6 w-6 text-blue-500" />
               <span className="text-muted-foreground">Réservé</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-2xl">🔴</span>
+              <Ban className="h-6 w-6 text-red-500" />
               <span className="text-muted-foreground">Occupé</span>
             </div>
           </div>
@@ -99,23 +97,22 @@ export default function ParkingMap() {
             <Card
               key={spot.id}
               className={`${
-                spot.status === "available" ? "cursor-pointer hover-elevate active-elevate-2" : "cursor-not-allowed opacity-75"
+                spot.status === "available" ? "cursor-pointer hover-elevate active-elevate-2" : "cursor-not-allowed opacity-80"
               } transition-all overflow-visible`}
               onClick={() => handleSpotClick(spot)}
-              data-testid={`card-spot-${spot.id}`}
             >
               <CardContent className="p-8">
                 <div className="text-center">
-                  <div className="text-6xl mb-4">{getStatusIcon(spot.status)}</div>
+                  <div className="mb-4">{getStatusIcon(spot.status)}</div>
                   <h3 className="text-3xl font-bold mb-2">Place {spot.id}</h3>
-                  <Badge
-                    className={`${getStatusColor(spot.status)} text-white mb-4`}
-                    data-testid={`badge-status-${spot.id}`}
-                  >
+
+                  <div className={`inline-block px-4 py-1 rounded-full text-white mb-4
+                    ${spot.status === "available" ? "bg-green-500" :
+                      spot.status === "reserved" ? "bg-blue-500" : "bg-red-500"}`}>
                     {spot.status === "available" && "Disponible"}
                     {spot.status === "reserved" && "Réservé"}
                     {spot.status === "occupied" && "Occupé"}
-                  </Badge>
+                  </div>
 
                   {spot.status !== "available" && spot.clientName && (
                     <div className="mt-4 space-y-2 text-sm text-muted-foreground">

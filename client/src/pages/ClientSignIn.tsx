@@ -28,6 +28,7 @@ export default function ClientSignIn() {
       return;
     }
 
+    // Stocker temporairement les données
     localStorage.setItem("clientSession", JSON.stringify(formData));
     
     toast({
@@ -35,8 +36,9 @@ export default function ClientSignIn() {
       description: `Bienvenue ${formData.fullName}`,
     });
     
+    // Rediriger vers la page de vérification de l'email
     setTimeout(() => {
-      setLocation("/parking");
+      setLocation("/verify-email");
     }, 1000);
   };
 
@@ -86,6 +88,17 @@ export default function ClientSignIn() {
               Continuer
             </Button>
           </form>
+
+          {/* Bouton de retour à la landing page */}
+          <div className="mt-4 text-center">
+            <Button
+              variant="ghost"
+              onClick={() => setLocation("/")}
+              className="text-primary hover:text-primary/80"
+            >
+              ← Retour à l'accueil
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </div>

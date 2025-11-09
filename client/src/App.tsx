@@ -14,12 +14,15 @@ import CodeDisplay from "@/pages/CodeDisplay";
 import AdminLogin from "@/pages/AdminLogin";
 import AdminDashboard from "@/pages/AdminDashboard";
 import ReservationHistory from "@/pages/ReservationHistory";
+import VerifyEmail from "./pages/VerifyEmail";
+
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={LandingPage} />
       <Route path="/client-signin" component={ClientSignIn} />
+      <Route path="/verify-email" component={VerifyEmail} />
       <Route path="/parking" component={ParkingMap} />
       <Route path="/reserve/:spotId" component={ReservationForm} />
       <Route path="/payment/:spotId" component={PaymentPage} />
